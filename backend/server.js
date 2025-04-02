@@ -4,7 +4,7 @@ import bcrypt from 'bcryptjs';
 import jwt from "jsonwebtoken";
 import dotenv from 'dotenv';
 import cors from 'cors';
-import crypto from 'crypto';
+import hash from 'hash.js'; // Alternative library for hashing
 
 import connectDB from './db/db.js';  // Ensure the correct file extension (.js)
 import authRoute from './routes/auth.route.js';
@@ -35,13 +35,13 @@ app.get("/profile", async (req, res) => {
     }
 });
 
-// Ensure .env is loaded before hashing
-console.log(crypto.createHash('sha256').update(process.env.JWT_SECRET || "").digest('hex'));
+// Replace crypto with hash.js for hashing
+const hashedSecret = hash.sha256().update(process.env.JWT_SECRET || "").digest('hex');
+console.log(hashedSecret);
 
 (async () => {
         await connectDB();
 })();
-// connectDB();
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`)); 
